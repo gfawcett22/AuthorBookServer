@@ -33,7 +33,7 @@ namespace AuthorBookApi.Controllers
             }
         }
 
-        [HttpGet("{id}", Name ="GetAuthor")]
+        [HttpGet("{id}", Name = "GetAuthor")]
         public IActionResult GetAuthor([FromRoute] int id)
         {
             try
@@ -67,12 +67,43 @@ namespace AuthorBookApi.Controllers
                     throw new Exception("Creating an author failed.");
                 }
                 var authorToReturn = Mapper.Map<AuthorDto>(authorEntity);
-                return CreatedAtRoute("GetAuthor", new {id = authorToReturn.Id}, authorToReturn);
+                return CreatedAtRoute("GetAuthor", new { id = authorToReturn.Id }, authorToReturn);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, "There was an internal server error.");
             }
+        }
+
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAuthor(int id)
+        {
+            var authorFromRepo = _libRepo.GetAuthor(id);
+            if (authorFromRepo == null) return NotFound();
+            _libRepo.DeleteAuthor(authorFromRepo);
+            if (!_libRepo.Save()) throw new Exception($"There was an error deleting author {id}");
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateAuthor(int id, [FromBody] AuthorToUpdateDto authorToUpdate)
+        {
+            if (authorToUpdate == null) return BadRequest();
+            var authorFromRepo = _libRepo.GetAuthor(id);
+
+            if (authorFromRepo == null) return NotFound();
+            try
+            {
+                Mapper.Map(authorToUpdate, authorFromRepo);
+                //authorFromRepo.Id = id;
+                _libRepo.UpdateAuthor(authorFromRepo); 
+                _libRepo.Save();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"Error updating author {id}");
+            }
+            return NoContent();
         }
     }
 }

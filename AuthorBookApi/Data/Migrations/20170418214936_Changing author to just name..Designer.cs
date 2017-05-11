@@ -8,9 +8,10 @@ using AuthorBookApi.Data;
 namespace AuthorBookApi.Data.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170418214936_Changing author to just name.")]
+    partial class Changingauthortojustname
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -21,7 +22,7 @@ namespace AuthorBookApi.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DateOfBirth");
+                    b.Property<DateTimeOffset>("DateOfBirth");
 
                     b.Property<string>("Genre")
                         .IsRequired()

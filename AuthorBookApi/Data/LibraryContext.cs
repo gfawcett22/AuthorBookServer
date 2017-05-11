@@ -13,7 +13,7 @@ namespace AuthorBookApi.Data
         public LibraryContext(DbContextOptions<LibraryContext> options)
           : base(options)
         {
-            Database.Migrate();
+            //Database.Migrate();
         }
 
         public DbSet<Author> Authors { get; set; }

@@ -54,5 +54,32 @@ namespace AuthorBookApi.Controllers
             return CreatedAtRoute("GetBookForAuthor", new {authorId = authorId, id = bookToReturn.Id}, bookToReturn);
         }
 
+        [HttpDelete("{id}")]
+        public IActionResult DeleteBookForAuthor(int authorId, int id)
+        {
+            if (!_libRepo.AuthorExists(authorId)) return NotFound();
+            var bookFromRepo = _libRepo.GetBookForAuthor(authorId, id);
+            if (bookFromRepo == null) return NotFound();
+            _libRepo.DeleteBook(bookFromRepo);
+            if (!_libRepo.Save()) throw new Exception($"Failed deleting book {id} for author {authorId}");
+            return NoContent();
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateBookForAuthor(int authorId, int id, [FromBody]BookForUpdateDto bookForUpdate)
+        {
+            if (bookForUpdate == null) return BadRequest();
+
+            var bookFromRepo = _libRepo.GetBookForAuthor(authorId, id);
+            if (bookFromRepo == null) return NotFound();
+            Mapper.Map(bookFromRepo, bookForUpdate);
+            _libRepo.UpdateBookForAuthor(bookFromRepo);
+            if (!_libRepo.Save())
+            {
+                throw new Exception($"Error updating book {id} for author {authorId}");
+            }
+            return NoContent();
+        }
+
     }
 }

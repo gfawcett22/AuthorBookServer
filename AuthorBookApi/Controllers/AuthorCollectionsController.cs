@@ -18,7 +18,7 @@ namespace AuthorBookApi.Controllers
         {
             this._libRepo = _libRepo;
         }
-       
+
         [HttpPost]
         public IActionResult CreateAuthorCollection([FromBody] IEnumerable<AuthorToCreateDto> authors)
         {

@@ -215,3 +215,4 @@ FakesAssemblies/
 **/*.Server/GeneratedArtifacts
 **/*.Server/ModelManifest.xml
 _Pvt_Extensions
+/AuthorBookApi/Data/Migrations/20170414232524_Initial migration Azure.cs

@@ -54,20 +54,21 @@ namespace AuthorBookApi.Services
 
         public IEnumerable<Author> GetAuthors()
         {
-            return _context.Authors.OrderBy(a => a.FirstName).ThenBy(a => a.LastName);
+            return _context.Authors.OrderBy(a => a.Name).ThenBy(a => a.Genre);
         }
 
         public IEnumerable<Author> GetAuthors(IEnumerable<int> authorIds)
         {
             return _context.Authors.Where(a => authorIds.Contains(a.Id))
-                .OrderBy(a => a.FirstName)
-                .ThenBy(a => a.LastName)
+                .OrderBy(a => a.Name)
+                .ThenBy(a => a.Genre)
                 .ToList();
         }
 
         public void UpdateAuthor(Author author)
         {
-            // no code in this implementation
+            _context.Update(author);
+            _context.Entry(author).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
         }
 
         public Book GetBookForAuthor(int authorId, int bookId)
@@ -83,7 +84,8 @@ namespace AuthorBookApi.Services
 
         public void UpdateBookForAuthor(Book book)
         {
-            // no code in this implementation
+            _context.Attach(book);
+            _context.Entry(book).State = Microsoft.EntityFrameworkCore.EntityState.Modified;
         }
 
         public bool Save()

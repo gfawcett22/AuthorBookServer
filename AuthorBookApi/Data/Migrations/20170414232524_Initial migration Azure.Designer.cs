@@ -8,9 +8,10 @@ using AuthorBookApi.Data;
 namespace AuthorBookApi.Data.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170414232524_Initial migration Azure")]
+    partial class InitialmigrationAzure
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")
@@ -21,15 +22,19 @@ namespace AuthorBookApi.Data.Migrations
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd();
 
-                    b.Property<DateTime>("DateOfBirth");
+                    b.Property<DateTimeOffset>("DateOfBirth");
+
+                    b.Property<string>("FirstName")
+                        .IsRequired()
+                        .HasMaxLength(50);
 
                     b.Property<string>("Genre")
                         .IsRequired()
                         .HasMaxLength(50);
 
-                    b.Property<string>("Name")
+                    b.Property<string>("LastName")
                         .IsRequired()
-                        .HasMaxLength(100);
+                        .HasMaxLength(50);
 
                     b.HasKey("Id");
 

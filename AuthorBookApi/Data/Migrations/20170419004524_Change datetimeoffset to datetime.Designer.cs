@@ -8,9 +8,10 @@ using AuthorBookApi.Data;
 namespace AuthorBookApi.Data.Migrations
 {
     [DbContext(typeof(LibraryContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20170419004524_Change datetimeoffset to datetime")]
+    partial class Changedatetimeoffsettodatetime
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.1.1")

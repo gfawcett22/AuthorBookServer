@@ -31,6 +31,10 @@ namespace AuthorBookApi
         // For more information on how to configure your application, visit http://go.microsoft.com/fwlink/?LinkID=398940
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowAll", p => p.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials());
+            });
             //add output in xml
             services.AddMvc(setupAction =>
             {
@@ -52,6 +56,7 @@ namespace AuthorBookApi
         public void Configure(IApplicationBuilder app, IHostingEnvironment env,
             ILoggerFactory loggerFactory, LibraryContext libraryContext)
         {
+            app.UseCors("AllowAll");
             loggerFactory.AddConsole();
 
             if (env.IsDevelopment())
@@ -70,16 +75,19 @@ namespace AuthorBookApi
                     });
                 });
             }
-            
+
             //mapping from entities to dto's
             AutoMapper.Mapper.Initialize(cfg =>
             {
                 cfg.CreateMap<Data.Author, Models.AuthorDto>()
-                    .ForMember(dest => dest.Name, opt => opt.MapFrom(src => $"{src.FirstName} {src.LastName}"))
                     .ForMember(dest => dest.Age, opt => opt.MapFrom(src => src.DateOfBirth.GetCurrentAge()));
                 cfg.CreateMap<Data.Book, Models.BookDto>();
                 cfg.CreateMap<Models.AuthorToCreateDto, Data.Author>();
+                cfg.CreateMap<Models.AuthorToUpdateDto, Data.Author>()
+                    .ForMember(dest => dest.DateOfBirth, opt => opt.MapFrom(src => src.DateOfBirth.ToString("d")));
+
                 cfg.CreateMap<Models.BookForCreationDto, Data.Book>();
+                cfg.CreateMap<Models.BookForUpdateDto, Data.Book>();
             });
 
             app.UseMvc();

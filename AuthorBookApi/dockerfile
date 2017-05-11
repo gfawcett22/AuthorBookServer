@@ -1,0 +1,9 @@
+FROM microsoft/aspnetcore-build
+
+WORKDIR /var/www/aspnetcoreapp
+
+VOLUME ./:var/www/aspnetcoreapp
+
+EXPOSE 5000
+
+RUN ["dotnet restore && dotnet build && dotnet run"]

@@ -12,15 +12,11 @@ namespace AuthorBookApi.Data
         public int Id { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string FirstName { get; set; }
+        [MaxLength(100)]
+        public string Name { get; set; }
 
         [Required]
-        [MaxLength(50)]
-        public string LastName { get; set; }
-
-        [Required]
-        public DateTimeOffset DateOfBirth { get; set; }
+        public DateTime DateOfBirth { get; set; }
 
         [Required]
         [MaxLength(50)]
@@ -29,4 +25,6 @@ namespace AuthorBookApi.Data
         public ICollection<Book> Books { get; set; }
             = new List<Book>();
     }
+
+
 }
